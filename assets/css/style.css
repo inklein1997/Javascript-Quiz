@@ -33,7 +33,7 @@ main {
     gap: 2em;
 }
 
-main div {
+#main div {
     justify-content: center;
 }
 
