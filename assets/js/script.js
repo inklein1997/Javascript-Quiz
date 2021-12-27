@@ -15,8 +15,8 @@ var timeLeft
 
 
 // position number for answers and questions arrays must match for each defintion/method
-const questions = ["adds new elements to the end of an array, and returns the new length", "Joins all elements of an array into a string","Selects a part of an array, and returns the new array","Creates a new array with the result of calling a function for each array element","Removes the last element of an array, and returns that element"];
-const answers = ["push()", "join()", "slice()", "map()", "pop()"]
+var questions = ["adds new elements to the end of an array, and returns the new length", "Joins all elements of an array into a string","Selects a part of an array, and returns the new array","Creates a new array with the result of calling a function for each array element","Removes the last element of an array, and returns that element"];
+var answers = ["push()", "join()", "slice()", "map()", "pop()"]
 
 var question
 var answer1
@@ -29,7 +29,6 @@ startEl.addEventListener("click", start)
 function start() {
     mainEl.remove();        //clears screen
     startTimer();           //starts timer
-    pullQuestionAndAnswer();         //pulls in random question
     generateLayout();       //generates layout for new question
     askQuestion();          //displays new question with 
 }
@@ -52,9 +51,6 @@ function pullQuestionAndAnswer() {
     answer2 = answers[Math.floor(Math.random()*answers.length)]
     answer3 = answers[Math.floor(Math.random()*answers.length)]
     correctAnswer = answers[position];
-
-    console.log(question);
-    console.log(correctAnswer);
 }
 
 function generateLayout() {
@@ -69,13 +65,17 @@ function generateLayout() {
     divEl1.setAttribute("class", "row")
     divEl1.setAttribute("style", "justify-content:center; margin-top: 2em;")
     divEl2.setAttribute("style","display:flex; flex-wrap:wrap; justify-content:center; gap: 1em; margin:7%;") 
-    choice1El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px")
-    choice2El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px")
-    choice3El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px")
-    choice4El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px")
+    choice1El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0")
+    choice2El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0")
+    choice3El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0")
+    choice4El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0")
 } 
 
 function askQuestion() {
-    pullQuestionAndAnswer();
-    questionEl.textContent = question
+    pullQuestionAndAnswer();    //pulls randomquestion out from array
+    questionEl.textContent = question;
+    choice1El.textContent = answer1;
+    choice2El.textContent = answer2;
+    choice3El.textContent = answer3;
+    choice4El.textContent = correctAnswer;
 }
