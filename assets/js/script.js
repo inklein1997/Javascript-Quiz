@@ -9,7 +9,8 @@ var divEl3 = document.createElement("div")
 var choice1El = document.createElement("button");
 var choice2El = document.createElement("button");
 var choice3El = document.createElement("button");
-var choice4El = document.createElement("button");
+var correctChoiceEl = document.createElement("button");
+var notifyEl = document.createElement("h2")
 
 var timeLeft
 
@@ -24,7 +25,11 @@ var answer2
 var answer3
 var correctAnswer
 
-startEl.addEventListener("click", start)
+startEl.addEventListener("click", start);
+correctChoiceEl.addEventListener("click", notifyCorrect);
+choice1El.addEventListener("click", notifyIncorrect);
+choice2El.addEventListener("click", notifyIncorrect);
+choice3El.addEventListener("click", notifyIncorrect);
 
 function start() {
     mainEl.remove();        //clears screen
@@ -60,7 +65,8 @@ function generateLayout() {
     divEl2.appendChild(choice1El);
     divEl2.appendChild(choice2El);
     divEl2.appendChild(choice3El);
-    divEl2.appendChild(choice4El);
+    divEl2.appendChild(correctChoiceEl);
+    divEl1.appendChild(notifyEl);
 
     divEl1.setAttribute("class", "row")
     divEl1.setAttribute("style", "justify-content:center; margin-top: 2em;")
@@ -68,14 +74,22 @@ function generateLayout() {
     choice1El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0")
     choice2El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0")
     choice3El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0")
-    choice4El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0")
+    correctChoiceEl.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0")
 } 
 
 function askQuestion() {
-    pullQuestionAndAnswer();    //pulls randomquestion out from array
+    pullQuestionAndAnswer();    //pulls random question and mathcing answer out from array
     questionEl.textContent = question;
     choice1El.textContent = answer1;
     choice2El.textContent = answer2;
     choice3El.textContent = answer3;
-    choice4El.textContent = correctAnswer;
+    correctChoiceEl.textContent = correctAnswer;
+}
+
+function notifyCorrect() {
+    notifyEl.textContent = "You answered correctly!"
+}
+
+function notifyIncorrect() {
+    notifyEl.textContent = "You answered incorrectly!"
 }
