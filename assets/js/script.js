@@ -42,7 +42,6 @@ var correctAnswer
 //Remaining things to do...
     //highscore storage
     //event.preventDefault();
-    //randomize choice layout
 
 startEl.addEventListener("click", start);
 correctChoiceEl.addEventListener("click", notifyCorrect);   //if clicked, adds 1 to score and notifies user answer is correct.  generates new question
