@@ -13,15 +13,23 @@ var choice4El = document.createElement("button");
 
 var timeLeft
 
-const questions = ["adds new elements to the end of an array, and returns the new length"]
+
+// position number for answers and questions arrays must match for each defintion/method
+const questions = ["adds new elements to the end of an array, and returns the new length", "Joins all elements of an array into a string","Selects a part of an array, and returns the new array","Creates a new array with the result of calling a function for each array element","Removes the last element of an array, and returns that element"];
+const answers = ["push()", "join()", "slice()", "map()", "pop()"]
+
 var question
+var answer1
+var answer2
+var answer3
+var correctAnswer
 
 startEl.addEventListener("click", start)
 
 function start() {
     mainEl.remove();        //clears screen
     startTimer();           //starts timer
-    pullQuestion();         //pulls in random question
+    pullQuestionAndAnswer();         //pulls in random question
     generateLayout();       //generates layout for new question
     askQuestion();          //displays new question with 
 }
@@ -37,8 +45,16 @@ function startTimer () {
     }, 1000)
 }
 
-function pullQuestion() {
+function pullQuestionAndAnswer() {
     question = questions[Math.floor(Math.random()*questions.length)]
+    var position = questions.indexOf(question)
+    answer1 = answers[Math.floor(Math.random()*answers.length)]
+    answer2 = answers[Math.floor(Math.random()*answers.length)]
+    answer3 = answers[Math.floor(Math.random()*answers.length)]
+    correctAnswer = answers[position];
+
+    console.log(question);
+    console.log(correctAnswer);
 }
 
 function generateLayout() {
@@ -60,6 +76,6 @@ function generateLayout() {
 } 
 
 function askQuestion() {
-    pullQuestion();
+    pullQuestionAndAnswer();
     questionEl.textContent = question
 }
