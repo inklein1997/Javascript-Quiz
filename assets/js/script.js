@@ -2,6 +2,7 @@ var bodyEl = document.body
 var mainEl = document.getElementById('main');
 var timerEl = document.getElementById('timer');
 var startEl = document.getElementById('start');
+var newMainEl = document.createElement('main');
 var questionEl = document.createElement("h1");
 var divEl1 = document.createElement("div");
 var divEl2 = document.createElement("div");
@@ -38,6 +39,12 @@ function start() {
     askQuestion();          //displays new question with 
 }
 
+function askAgain() {
+    newMainEl.remove();
+    generateLayout();
+    askQuestion();
+}
+
 function startTimer () {
     timeLeft=100
     var timeInterval = setInterval(function() {
@@ -59,14 +66,15 @@ function pullQuestionAndAnswer() {
 }
 
 function generateLayout() {
-    bodyEl.appendChild(divEl1)
+    bodyEl.appendChild(newMainEl)
+    newMainEl.appendChild(divEl1)
     divEl1.appendChild(questionEl);
-    bodyEl.appendChild(divEl2);
+    newMainEl.appendChild(divEl2);
     divEl2.appendChild(choice1El);
     divEl2.appendChild(choice2El);
     divEl2.appendChild(choice3El);
     divEl2.appendChild(correctChoiceEl);
-    divEl1.appendChild(notifyEl);
+    newMainEl.appendChild(notifyEl);
 
     divEl1.setAttribute("class", "row")
     divEl1.setAttribute("style", "justify-content:center; margin-top: 2em;")
@@ -87,9 +95,13 @@ function askQuestion() {
 }
 
 function notifyCorrect() {
-    notifyEl.textContent = "You answered correctly!"
+    notifyEl.textContent = "You answered correctly!";
+    askAgain();
 }
 
 function notifyIncorrect() {
-    notifyEl.textContent = "You answered incorrectly!"
+    
+    notifyEl.textContent = "You answered incorrectly!";
+    timeLeft -= 10;
+    askAgain();
 }
