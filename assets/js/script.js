@@ -14,11 +14,10 @@ var correctChoiceEl = document.createElement("button");
 var notifyEl = document.createElement("h2")
 
 var timeLeft
-var score = []
 
 // position number for answers and questions arrays must match for each defintion/method
 var questions = ["adds new elements to the end of an array, and returns the new length", "Joins all elements of an array into a string","Selects a part of an array, and returns the new array","Creates a new array with the result of calling a function for each array element","Removes the last element of an array, and returns that element"];
-var answers = ["push()", "join()", "slice()", "map()", "pop()"]
+var answers;
 
 var question
 var answer1
@@ -27,10 +26,10 @@ var answer3
 var correctAnswer
 
 startEl.addEventListener("click", start);
-correctChoiceEl.addEventListener("click", notifyCorrect);
-choice1El.addEventListener("click", notifyIncorrect);
-choice2El.addEventListener("click", notifyIncorrect);
-choice3El.addEventListener("click", notifyIncorrect);
+correctChoiceEl.addEventListener("click", notifyCorrect);   //if clicked, adds 1 to score and notifies user answer is correct.  generates new question
+choice1El.addEventListener("click", notifyIncorrect);       //if clicked, removes 10 from time and notifies user answer is incorrect.  generates new question
+choice2El.addEventListener("click", notifyIncorrect);       //if clicked, removes 10 from time and notifies user answer is incorrect.  generates new question
+choice3El.addEventListener("click", notifyIncorrect);       //if clicked, removes 10 from time and notifies user answer is incorrect.  generates new question
 
 function start() {
     mainEl.remove();        //clears screen
@@ -41,16 +40,8 @@ function start() {
 
 function askAgain() {
     newMainEl.remove();
-    if(timeLeft > 0) {
     generateLayout();
     askQuestion();
-    } else {
-        timesUp();
-    }
-}
-
-function timesUp() {
-    console.log("times up!")
 }
 
 function startTimer () {
@@ -58,19 +49,32 @@ function startTimer () {
     var timeInterval = setInterval(function() {
         timeLeft-=0.01;
         timerEl.textContent = "Time Left: " + timeLeft.toFixed(2);
-        if (timeLeft == 0) {
-            clearInterval(timeInterval)
+        if (timeLeft <= 0) {
+            clearInterval(timeInterval);
+            newMainEl.remove();
         }
     }, 10)
 }
 
 function pullQuestionAndAnswer() {
-    question = questions[Math.floor(Math.random()*questions.length)]
-    var position = questions.indexOf(question)
-    answer1 = answers[Math.floor(Math.random()*answers.length)]
-    answer2 = answers[Math.floor(Math.random()*answers.length)]
-    answer3 = answers[Math.floor(Math.random()*answers.length)]
-    correctAnswer = answers[position];
+    var answers = ["push()", "join()", "slice()", "map()", "pop()"];
+
+    question = questions[Math.floor(Math.random()*questions.length)];   //selects random question from array
+    var position = questions.indexOf(question);                         //determines position of question
+    questions.splice(position, 1);                                      //removes question from array so it cannot be asked again
+    
+    correctAnswer = answers[position];                                  //answers array position matches with questions array position.  Will always be the correct answer.
+    answers.splice(position,1);                                         //removes option so the answer cannot be selected again for question.
+
+    answer1 = answers[Math.floor(Math.random()*answers.length)];
+    answers.splice(answers.indexOf(answer1),1);
+
+    answer2 = answers[Math.floor(Math.random()*answers.length)];
+    answers.splice(answers.indexOf(answer2),1);
+
+    answer3 = answers[Math.floor(Math.random()*answers.length)];
+    answers.splice(answers.indexOf(answer3),1);
+
 }
 
 function generateLayout() {
@@ -104,12 +108,10 @@ function askQuestion() {
 
 function notifyCorrect() {
     notifyEl.textContent = "You answered correctly!";
-    score.push(1);
     askAgain();
 }
 
 function notifyIncorrect() {
-    
     notifyEl.textContent = "You answered incorrectly!";
     timeLeft -= 10;
     askAgain();
