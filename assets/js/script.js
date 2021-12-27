@@ -1,4 +1,6 @@
 var bodyEl = document.body
+
+//for question Display
 var mainEl = document.getElementById('main');
 var timerEl = document.getElementById('timer');
 var startEl = document.getElementById('start');
@@ -13,6 +15,7 @@ var choice3El = document.createElement("button");
 var correctChoiceEl = document.createElement("button");
 var notifyEl = document.createElement("h2");
 
+//for end Display
 var newMainEl1 = document.createElement('main');
 var h1El = document.createElement('h1');
 var h2El = document.createElement('h2');
@@ -20,7 +23,6 @@ var formEl = document.createElement("form");
 var labelEl = document.createElement("label");
 var inputEl = document.createElement("input");
 var submitEl = document.createElement("input");
-
 
 var timeLeft
 
@@ -42,26 +44,26 @@ choice3El.addEventListener("click", notifyIncorrect);       //if clicked, remove
 
 function start() {
     mainEl.remove();                //clears screen
-    generateQuestionLayout();       //generates layout for new question
+    generateQuestionDisplay();      //generates layout for new question
     askQuestion();                  //displays new question with 
     startTimer();                   //starts timer
 }
 
 function askAgain() {
     newMainEl.remove();             //clears screen
-    generateQuestionLayout();       //generates layout for a new question
+    generateQuestionDisplay();      //generates layout for a new question
     askQuestion();                  //picks question that has not been used yet
 }
 
 function startTimer () {
-    timeLeft=5
+    timeLeft=100
     var timeInterval = setInterval(function() {
         timeLeft-=0.01;
         timerEl.textContent = "Time Left: " + timeLeft.toFixed(2);
-        if (timeLeft <= 0) {
+        if ((timeLeft <= 0) || questions.length == 0) {
             clearInterval(timeInterval);
             newMainEl.remove();
-            quizEnd()
+            quizEnd();
         }
     }, 10)
 }
@@ -87,7 +89,7 @@ function pullQuestionAndAnswer() {
 
 }
 
-function generateQuestionLayout() {
+function generateQuestionDisplay() {
     bodyEl.appendChild(newMainEl)
     newMainEl.appendChild(divEl1)
     divEl1.appendChild(questionEl);
@@ -127,14 +129,7 @@ function notifyIncorrect() {
     askAgain();
 }
 
-function quizEnd(event) {
-    newMainEl.remove();
-    endDisplay();
-    event.preventDefault()
-}
-
-function endDisplay() {
-
+function endDisplay(event) {
     h1El.textContent = "Quiz is over!"
     labelEl.textContent = "Enter Initials: "
     h2El.textContent = "Score: " + timeLeft.toFixed(2);
@@ -146,10 +141,6 @@ function endDisplay() {
     formEl.setAttribute("style","justify-content: center;gap:10px; align-items: center; background-color:#202020; padding:10px;")
     submitEl.setAttribute("style","background-color: #B385F2; padding: 3% 9%; border-radius:5px;")
 
-
-    // padding: 3% 9%;
-    // background-color: var(--lavender);
-    // border-radius:5px;
     bodyEl.appendChild(newMainEl1);
     newMainEl1.appendChild(h1El);
     newMainEl1.appendChild(h2El);
@@ -157,5 +148,9 @@ function endDisplay() {
     formEl.appendChild(labelEl);
     formEl.appendChild(inputEl);
     formEl.appendChild(submitEl);
+}
 
+function quizEnd() {
+    newMainEl.remove();
+    endDisplay(event);
 }
