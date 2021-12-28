@@ -1,11 +1,11 @@
-var bodyEl = document.body
+var bodyEl = document.body;
 
 //for question Display
 var mainEl = document.getElementById('main');
 var timerEl = document.getElementById('timer');
 var startEl = document.getElementById('start');
 var newMainEl = document.createElement('main');
-var questionProgressEl = document.createElement('h2')
+var questionProgressEl = document.createElement('h2');
 var questionEl = document.createElement("h1");
 var divEl1 = document.createElement("div");
 var divEl2 = document.createElement("div");
@@ -25,7 +25,7 @@ var labelEl = document.createElement("label");
 var inputEl = document.createElement("input");
 var submitEl = document.createElement("input");
 
-var timeLeft
+var timeLeft;
 
 var questions = [
     question0 = {
@@ -52,15 +52,15 @@ var questions = [
         question: "Removes the first element of an array, and returns that element",
         answer: "shift()"
     }
-]
+];
 
-var question
-var position
-var answer1
-var answer2
-var answer3
-var correctAnswer
-var questionNumber = 0
+var question;
+var position;
+var answer1;
+var answer2;
+var answer3;
+var correctAnswer;
+var questionNumber = 0;
 
 //Remaining things to do...
     //highscore storage
@@ -76,39 +76,40 @@ function start() {
     generateQuestionDisplay();      //generates layout for new question
     askQuestion();                  //displays new question with 
     startTimer();                   //starts timer
-}
+};
 
 function askAgain() {
     newMainEl.remove();             //clears screen
     generateQuestionDisplay();      //generates layout for a new question
     askQuestion();                  //picks question that has not been used yet
-}
+};
 
 function generateQuestionDisplay() {
-    var appendOption = [correctChoiceEl, choice1El, choice2El, choice3El]
+    var appendOption = [correctChoiceEl, choice1El, choice2El, choice3El];
     
     for (var i = 0; i < 4; i++) {       //For loop appends options in randomized order
-    var randomAppendOption = appendOption[Math.floor(Math.random()*appendOption.length)]
+    var randomAppendOption = appendOption[Math.floor(Math.random()*appendOption.length)];
     var positionAppendOption = appendOption.indexOf(randomAppendOption);
     appendOption.splice(positionAppendOption, 1);
     divEl2.appendChild(randomAppendOption);
     }
 
-    bodyEl.appendChild(newMainEl)
-    newMainEl.appendChild(divEl1)
+    bodyEl.appendChild(newMainEl);
+    newMainEl.appendChild(divEl1);
     divEl1.appendChild(questionProgressEl);
     divEl1.appendChild(questionEl);
     newMainEl.appendChild(divEl2);
    ;
 
-    divEl1.setAttribute("class", "column")
-    divEl1.setAttribute("style", "justify-content:center; margin-top: 2em; gap: 2em;")
-    divEl2.setAttribute("style","display:flex; flex-wrap:wrap; justify-content:center; gap: 1em; margin:7%;") 
-    questionProgressEl.setAttribute("style"," ")
-    choice1El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0")
-    choice2El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0")
-    choice3El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0")
-    correctChoiceEl.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0")
+    divEl1.setAttribute("class", "column");
+    divEl1.setAttribute("style", "justify-content:center; margin-top: 2em; gap: 2em;");
+    divEl2.setAttribute("style","display:flex; flex-wrap:wrap; justify-content:center; gap: 1em; margin:7%;");
+    questionEl.setAttribute("style","max-width:none;");
+    questionProgressEl.setAttribute("style","width: 280px;align-self:center;");
+    choice1El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0;");
+    choice2El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0;");
+    choice3El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0;");
+    correctChoiceEl.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0;");
 }
 
 function askQuestion() {
@@ -145,7 +146,7 @@ function pullQuestionAndAnswer() {
 }
 
 function startTimer () {            //starts 100 second countdown
-    timeLeft=100
+    timeLeft=100;
     var timeInterval = setInterval(function() {
         timeLeft-=0.01;
         timerEl.textContent = "Time Left: " + timeLeft.toFixed(2);       //displays countdown
@@ -155,22 +156,22 @@ function startTimer () {            //starts 100 second countdown
             quizEnd();
         }
     }, 10)
-}
+};
 
 function notifyCorrect() {
-    var popupTimeCorrect = 1.5
+    var popupTimeCorrect = 1.5;
     questions.splice(position, 1);      //removes question from array so it cannot be asked again
     askAgain();
     var popupIntervalCorrect = setInterval(function() {
         popupTimeCorrect-=0.02;
-        newMainEl.appendChild(notifyEl)
+        newMainEl.appendChild(notifyEl);
         notifyEl.textContent = "CORRECT!";
         if (popupTimeCorrect <= 0) {
             clearInterval(popupIntervalCorrect);
             notifyEl.remove();
         }
     },10)
-}
+};
 
 function notifyIncorrect() {
     timeLeft-=10;
@@ -179,26 +180,26 @@ function notifyIncorrect() {
     askAgain();
     var popupIntervalIncorrect = setInterval(function() {
         popupTimeIncorrect-=0.02;
-        newMainEl.appendChild(notifyEl)
+        newMainEl.appendChild(notifyEl);
         notifyEl.textContent = "INCORRECT!";
         if (popupTimeIncorrect <= 0) {
             clearInterval(popupIntervalIncorrect);
             notifyEl.remove();
         }
     },10)
-}
+};
 
 function endDisplay() {
-    h1El.textContent = "Quiz is over!"
-    labelEl.textContent = "Enter Initials: "
+    h1El.textContent = "Quiz is over!";
+    labelEl.textContent = "Enter Initials: ";
     h2El.textContent = "Score: " + timeLeft.toFixed(2);
     
-    submitEl.setAttribute("type","submit");
-    newMainEl1.setAttribute("class","column");
-    newMainEl1.setAttribute("style","align-items: center");
-    formEl.setAttribute("class","row");
-    formEl.setAttribute("style","justify-content: center;gap:10px; align-items: center; background-color:#202020; padding:10px;")
-    submitEl.setAttribute("style","background-color: #B385F2; padding: 3% 9%; border-radius:5px;")
+    submitEl.setAttribute("type","submit;");
+    newMainEl1.setAttribute("class","column;");
+    newMainEl1.setAttribute("style","align-items: center;");
+    formEl.setAttribute("class","row;");
+    formEl.setAttribute("style","justify-content: center;gap:10px; align-items: center; background-color:#202020; padding:10px;");
+    submitEl.setAttribute("style","background-color: #B385F2; padding: 3% 9%; border-radius:5px;");
 
     bodyEl.appendChild(newMainEl1);
     newMainEl1.appendChild(h1El);
@@ -216,5 +217,5 @@ function quizEnd() {
 
 submitEl.addEventListener('click', function(event) {
     event.preventDefault();
-    console.log('submitted')
-})
+    console.log('submitted');
+});
