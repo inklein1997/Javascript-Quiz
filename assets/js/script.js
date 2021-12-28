@@ -26,11 +26,30 @@ var submitEl = document.createElement("input");
 
 var timeLeft
 
-// position number for answers and questions arrays must match for each defintion/method
-var questions = ["adds new elements to the end of an array, and returns the new length", "Joins all elements of an array into a string","Selects a part of an array, and returns the new array","Creates a new array with the result of calling a function for each array element","Removes the last element of an array, and returns that element"];
+var questions = [
+    question1 = {
+        question: "adds new elements to the end of an array, and returns the new length",
+        answer: "push()"
+    },
+    question2 = {
+        question: "Joins all elements of an array into a string",
+        answer: "join()"
+    },
+    question3 = {
+        question: "Selects a part of an array, and returns the new array",
+        answer: "slice"
+    },
+    question4 = {
+        question: "Creates a new array with the result of calling a function for each array element",
+        answer: "map()"
+    },
+    question5 = {
+        question: "Removes the last element of an array, and returns that element",
+        answer: "pop()"
+    }
+]
+
 var answers;
-
-
 
 var question
 var position
@@ -78,21 +97,21 @@ function startTimer () {
 function pullQuestionAndAnswer() {
     var answers = ["push()", "join()", "slice()", "map()", "pop()"];
 
-    question = questions[Math.floor(Math.random()*questions.length)];   //selects random question from array
-    position = questions.indexOf(question);                             //determines position of question
-    
-    
-    correctAnswer = answers[position];                                  //answers array position matches with questions array position.  Will always be the correct answer.
-    answers.splice(position,1);                                         //removes option so the answer cannot be selected again for question.
+    var questionSelection = questions[Math.floor(Math.random()*questions.length)];      //selects random question from array
+    position = questions.indexOf(questionSelection)
+
+    question = questionSelection.question;
+    correctAnswer = questionSelection.answer;
+    answers.splice(questions.indexOf(questionSelection), 1)
 
     answer1 = answers[Math.floor(Math.random()*answers.length)];
-    answers.splice(answers.indexOf(answer1),1);
+    answers.splice((answers.indexOf(answer1)),1);
 
     answer2 = answers[Math.floor(Math.random()*answers.length)];
-    answers.splice(answers.indexOf(answer2),1);
+    answers.splice((answers.indexOf(answer2)),1);
 
     answer3 = answers[Math.floor(Math.random()*answers.length)];
-    answers.splice(answers.indexOf(answer3),1); 
+    answers.splice((answers.indexOf(answer3)),1); 
 }
 
 

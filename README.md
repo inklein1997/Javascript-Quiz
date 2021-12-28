@@ -3,7 +3,7 @@
 ## Table of Contents
 - [Project Goal](##Project-Goal)
 - [Links](##Links)
-- [Screenshot of Application](##Screenshot-of-Application)
+- [Screenshot of Application](##Screenshot-of-Webpage)
 - [User Instructions](##User-Instructions)
 - [Acknowledgements](##Acknowledgements)
 
