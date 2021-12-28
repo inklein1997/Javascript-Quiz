@@ -57,8 +57,6 @@ var answer3
 var correctAnswer
 
 //Remaining things to do...
-    //fix bug showing duplicate correct answers
-    //event.preventDefault();
     //highscore storage
 
 startEl.addEventListener("click", start);
@@ -121,14 +119,13 @@ function pullQuestionAndAnswer() {
     var questionSelection = questions[Math.floor(Math.random()*questions.length)];      //selects random question from array
     position = questions.indexOf(questionSelection);
 
-    question = questionSelection.question;          //pulls question from question[n].question]
-    correctAnswer = questionSelection.answer;       //pulls matching answer from question[n].answer]
-    //answers.splice(position, 1);                    //should remove duplicate answers from popping up
-    var answerSelection = answers.filter(answer => answer !== correctAnswer)
+    question = questionSelection.question;                                              //pulls question from question[n].question]
+    correctAnswer = questionSelection.answer;                                           //pulls matching answer from question[n].answer]
+    var answerSelection = answers.filter(answer => answer !== correctAnswer);           //filters out the correct answer from answers array
 
 
     answer1 = answerSelection[Math.floor(Math.random()*answerSelection.length)];        //selects incorrect answer options for multiple choice
-    answerSelection.splice((answerSelection.indexOf(answer1)),1);
+    answerSelection.splice((answerSelection.indexOf(answer1)),1);                       //prevents displaying duplicate incorrect answer twice by removing them from the array
 
     answer2 = answerSelection[Math.floor(Math.random()*answerSelection.length)];
     answerSelection.splice((answerSelection.indexOf(answer2)),1);
@@ -154,9 +151,7 @@ function startTimer () {            //starts 100 second countdown
 function notifyCorrect() {
     var popupTimeCorrect = 1.5
     questions.splice(position, 1);      //removes question from array so it cannot be asked again
-    if (question.length > 0) {
-        askAgain();
-    }
+    askAgain();
     var popupIntervalCorrect = setInterval(function() {
         popupTimeCorrect-=0.02;
         newMainEl.appendChild(notifyEl)
@@ -169,6 +164,7 @@ function notifyCorrect() {
 }
 
 function notifyIncorrect() {
+    timeLeft-=10;
     var popupTimeIncorrect = 1.5;
     questions.splice(position, 1);  //removes question from array so it cannot be asked again.
     askAgain();
