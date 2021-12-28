@@ -114,7 +114,6 @@ function pullQuestionAndAnswer() {
     answers.splice((answers.indexOf(answer3)),1); 
 }
 
-
 function generateQuestionDisplay() {
     var appendOption = [correctChoiceEl, choice1El, choice2El, choice3El]
     
@@ -129,7 +128,7 @@ function generateQuestionDisplay() {
     newMainEl.appendChild(divEl1)
     divEl1.appendChild(questionEl);
     newMainEl.appendChild(divEl2);
-    newMainEl.appendChild(notifyEl);
+   ;
 
     divEl1.setAttribute("class", "row")
     divEl1.setAttribute("style", "justify-content:center; margin-top: 2em;")
@@ -150,16 +149,33 @@ function askQuestion() {
 }
 
 function notifyCorrect() {
-    notifyEl.textContent = "You answered correctly!";
+    var popupTimeCorrect = 1.5
     questions.splice(position, 1);      //removes question from array so it cannot be asked again
     askAgain();
+    var popupIntervalCorrect = setInterval(function() {
+        popupTimeCorrect-=0.02;
+        newMainEl.appendChild(notifyEl)
+        notifyEl.textContent = "CORRECT!";
+        if (popupTimeCorrect <= 0) {
+            clearInterval(popupIntervalCorrect);
+            notifyEl.remove();
+        }
+    },10)
 }
 
 function notifyIncorrect() {
-    notifyEl.textContent = "You answered incorrectly!";
-    questions.splice(position, 1);      //removes question from array so it cannot be asked again
-    timeLeft -= 10;
+    var popupTimeIncorrect = 1.5;
+    questions.splice(position, 1);  //removes question from array so it cannot be asked again.
     askAgain();
+    var popupIntervalIncorrect = setInterval(function() {
+        popupTimeIncorrect-=0.02;
+        newMainEl.appendChild(notifyEl)
+        notifyEl.textContent = "INCORRECT!";
+        if (popupTimeIncorrect <= 0) {
+            clearInterval(popupIntervalIncorrect);
+            notifyEl.remove();
+        }
+    },10)
 }
 
 function endDisplay(event) {
