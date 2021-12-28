@@ -27,29 +27,27 @@ var submitEl = document.createElement("input");
 var timeLeft
 
 var questions = [
-    question1 = {
+    question0 = {
         question: "adds new elements to the end of an array, and returns the new length",
         answer: "push()"
     },
-    question2 = {
+    question1 = {
         question: "Joins all elements of an array into a string",
         answer: "join()"
     },
-    question3 = {
+    question2 = {
         question: "Selects a part of an array, and returns the new array",
-        answer: "slice"
+        answer: "slice()"
     },
-    question4 = {
+    question3 = {
         question: "Creates a new array with the result of calling a function for each array element",
         answer: "map()"
     },
-    question5 = {
+    question4 = {
         question: "Removes the last element of an array, and returns that element",
         answer: "pop()"
     }
 ]
-
-var answers;
 
 var question
 var position
@@ -59,8 +57,9 @@ var answer3
 var correctAnswer
 
 //Remaining things to do...
-    //highscore storage
+    //fix bug showing duplicate correct answers
     //event.preventDefault();
+    //highscore storage
 
 startEl.addEventListener("click", start);
 correctChoiceEl.addEventListener("click", notifyCorrect);   //if clicked, adds 1 to score and notifies user answer is correct.  generates new question
@@ -79,39 +78,6 @@ function askAgain() {
     newMainEl.remove();             //clears screen
     generateQuestionDisplay();      //generates layout for a new question
     askQuestion();                  //picks question that has not been used yet
-}
-
-function startTimer () {
-    timeLeft=100
-    var timeInterval = setInterval(function() {
-        timeLeft-=0.01;
-        timerEl.textContent = "Time Left: " + timeLeft.toFixed(2);      //displays countdown
-        if ((timeLeft <= 0) || questions.length == 0) {                 //If user runs out of time or clicks through all the answer, the quiz ends.
-            clearInterval(timeInterval);
-            newMainEl.remove();
-            quizEnd();
-        }
-    }, 10)
-}
-
-function pullQuestionAndAnswer() {
-    var answers = ["push()", "join()", "slice()", "map()", "pop()"];
-
-    var questionSelection = questions[Math.floor(Math.random()*questions.length)];      //selects random question from array
-    position = questions.indexOf(questionSelection)
-
-    question = questionSelection.question;
-    correctAnswer = questionSelection.answer;
-    answers.splice(questions.indexOf(questionSelection), 1)
-
-    answer1 = answers[Math.floor(Math.random()*answers.length)];
-    answers.splice((answers.indexOf(answer1)),1);
-
-    answer2 = answers[Math.floor(Math.random()*answers.length)];
-    answers.splice((answers.indexOf(answer2)),1);
-
-    answer3 = answers[Math.floor(Math.random()*answers.length)];
-    answers.splice((answers.indexOf(answer3)),1); 
 }
 
 function generateQuestionDisplay() {
@@ -137,7 +103,9 @@ function generateQuestionDisplay() {
     choice2El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0")
     choice3El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0")
     correctChoiceEl.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0")
-} 
+}
+
+
 
 function askQuestion() {
     pullQuestionAndAnswer();    //pulls random question and mathcing answer out from array
@@ -148,10 +116,47 @@ function askQuestion() {
     correctChoiceEl.textContent = correctAnswer;
 }
 
+function pullQuestionAndAnswer() {
+    var answers = ["push()", "join()", "slice()", "map()", "pop()"];
+    var questionSelection = questions[Math.floor(Math.random()*questions.length)];      //selects random question from array
+    position = questions.indexOf(questionSelection);
+
+    question = questionSelection.question;          //pulls question from question[n].question]
+    correctAnswer = questionSelection.answer;       //pulls matching answer from question[n].answer]
+    //answers.splice(position, 1);                    //should remove duplicate answers from popping up
+    var answerSelection = answers.filter(answer => answer !== correctAnswer)
+
+
+    answer1 = answerSelection[Math.floor(Math.random()*answerSelection.length)];        //selects incorrect answer options for multiple choice
+    answerSelection.splice((answerSelection.indexOf(answer1)),1);
+
+    answer2 = answerSelection[Math.floor(Math.random()*answerSelection.length)];
+    answerSelection.splice((answerSelection.indexOf(answer2)),1);
+
+    answer3 = answerSelection[Math.floor(Math.random()*answerSelection.length)];
+    answerSelection.splice((answerSelection.indexOf(answer3)),1); 
+
+}
+
+function startTimer () {            //starts 100 second countdown
+    timeLeft=100
+    var timeInterval = setInterval(function() {
+        timeLeft-=0.01;
+        timerEl.textContent = "Time Left: " + timeLeft.toFixed(2);      //displays countdown
+        if ((timeLeft <= 0) || questions.length == 0) {                 //If user runs out of time or clicks through all the answer, the quiz ends.
+            clearInterval(timeInterval);
+            newMainEl.remove();
+            quizEnd();
+        }
+    }, 10)
+}
+
 function notifyCorrect() {
     var popupTimeCorrect = 1.5
     questions.splice(position, 1);      //removes question from array so it cannot be asked again
-    askAgain();
+    if (question.length > 0) {
+        askAgain();
+    }
     var popupIntervalCorrect = setInterval(function() {
         popupTimeCorrect-=0.02;
         newMainEl.appendChild(notifyEl)
@@ -178,7 +183,7 @@ function notifyIncorrect() {
     },10)
 }
 
-function endDisplay(event) {
+function endDisplay() {
     h1El.textContent = "Quiz is over!"
     labelEl.textContent = "Enter Initials: "
     h2El.textContent = "Score: " + timeLeft.toFixed(2);
@@ -201,5 +206,10 @@ function endDisplay(event) {
 
 function quizEnd() {
     newMainEl.remove();
-    endDisplay(event);
+    endDisplay();
 }
+
+submitEl.addEventListener('click', function(event) {
+    event.preventDefault();
+    console.log('submitted')
+})
