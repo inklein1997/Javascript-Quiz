@@ -5,6 +5,7 @@ var mainEl = document.getElementById('main');
 var timerEl = document.getElementById('timer');
 var startEl = document.getElementById('start');
 var newMainEl = document.createElement('main');
+var questionProgressEl = document.createElement('h2')
 var questionEl = document.createElement("h1");
 var divEl1 = document.createElement("div");
 var divEl2 = document.createElement("div");
@@ -46,6 +47,10 @@ var questions = [
     question4 = {
         question: "Removes the last element of an array, and returns that element",
         answer: "pop()"
+    },
+    question5 = {
+        question: "Removes the first element of an array, and returns that element",
+        answer: "shift()"
     }
 ]
 
@@ -55,6 +60,7 @@ var answer1
 var answer2
 var answer3
 var correctAnswer
+var questionNumber = 0
 
 //Remaining things to do...
     //highscore storage
@@ -90,23 +96,24 @@ function generateQuestionDisplay() {
 
     bodyEl.appendChild(newMainEl)
     newMainEl.appendChild(divEl1)
+    divEl1.appendChild(questionProgressEl);
     divEl1.appendChild(questionEl);
     newMainEl.appendChild(divEl2);
    ;
 
-    divEl1.setAttribute("class", "row")
-    divEl1.setAttribute("style", "justify-content:center; margin-top: 2em;")
+    divEl1.setAttribute("class", "column")
+    divEl1.setAttribute("style", "justify-content:center; margin-top: 2em; gap: 2em;")
     divEl2.setAttribute("style","display:flex; flex-wrap:wrap; justify-content:center; gap: 1em; margin:7%;") 
+    questionProgressEl.setAttribute("style"," ")
     choice1El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0")
     choice2El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0")
     choice3El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0")
     correctChoiceEl.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0")
 }
 
-
-
 function askQuestion() {
     pullQuestionAndAnswer();    //pulls random question and mathcing answer out from array
+    questionProgressEl.textContent = "Question " + questionNumber + " out of 5";
     questionEl.textContent = question;
     choice1El.textContent = answer1;
     choice2El.textContent = answer2;
@@ -115,7 +122,7 @@ function askQuestion() {
 }
 
 function pullQuestionAndAnswer() {
-    var answers = ["push()", "join()", "slice()", "map()", "pop()"];
+    var answers = ["push()", "join()", "slice()", "map()", "pop()", "shift()"];
     var questionSelection = questions[Math.floor(Math.random()*questions.length)];      //selects random question from array
     position = questions.indexOf(questionSelection);
 
@@ -133,14 +140,16 @@ function pullQuestionAndAnswer() {
     answer3 = answerSelection[Math.floor(Math.random()*answerSelection.length)];
     answerSelection.splice((answerSelection.indexOf(answer3)),1); 
 
+    questionNumber++;       //updates question number i.e. Question 1 out of 5, 2 out of 5, etc
+
 }
 
 function startTimer () {            //starts 100 second countdown
     timeLeft=100
     var timeInterval = setInterval(function() {
         timeLeft-=0.01;
-        timerEl.textContent = "Time Left: " + timeLeft.toFixed(2);      //displays countdown
-        if ((timeLeft <= 0) || questions.length == 0) {                 //If user runs out of time or clicks through all the answer, the quiz ends.
+        timerEl.textContent = "Time Left: " + timeLeft.toFixed(2);       //displays countdown
+        if ((timeLeft <= 0) || (questions.length < 2)) {                 //If user runs out of time or clicks through all the answer, the quiz ends.
             clearInterval(timeInterval);
             newMainEl.remove();
             quizEnd();
