@@ -1,5 +1,5 @@
 var bodyEl = document.body;
-
+var highscoresEl = document.getElementById('highscores')
 //for question Display
 var mainEl = document.getElementById('main');
 var timerEl = document.getElementById('timer');
@@ -24,6 +24,11 @@ var formEl = document.createElement("form");
 var labelEl = document.createElement("label");
 var inputEl = document.createElement("input");
 var submitEl = document.createElement("input");
+
+var h1El1 = document.createElement("h1")
+var h2El1 = document.createElement("h2")
+var buttonEl = document.createElement("button")
+var newMainEl2 = document.createElement("main")
 
 var timeLeft;
 
@@ -161,8 +166,8 @@ function startTimer () {            //starts 100 second countdown
 function notifyCorrect() {
     var popupTimeCorrect = 1.5;
     questions.splice(position, 1);      //removes question from array so it cannot be asked again
-    askAgain();
-    var popupIntervalCorrect = setInterval(function() {
+    askAgain();                         //asks a new question if another is available.
+    var popupIntervalCorrect = setInterval(function() {     //notification only appears for a brief period time
         popupTimeCorrect-=0.02;
         newMainEl.appendChild(notifyEl);
         notifyEl.textContent = "CORRECT!";
@@ -178,7 +183,7 @@ function notifyIncorrect() {
     var popupTimeIncorrect = 1.5;
     questions.splice(position, 1);  //removes question from array so it cannot be asked again.
     askAgain();
-    var popupIntervalIncorrect = setInterval(function() {
+    var popupIntervalIncorrect = setInterval(function() {   //notification only appears for a brief period time
         popupTimeIncorrect-=0.02;
         newMainEl.appendChild(notifyEl);
         notifyEl.textContent = "INCORRECT!";
@@ -194,12 +199,13 @@ function endDisplay() {
     labelEl.textContent = "Enter Initials: ";
     h2El.textContent = "Score: " + timeLeft.toFixed(2);
     
-    submitEl.setAttribute("type","submit;");
-    newMainEl1.setAttribute("class","column;");
-    newMainEl1.setAttribute("style","align-items: center;");
-    formEl.setAttribute("class","row;");
-    formEl.setAttribute("style","justify-content: center;gap:10px; align-items: center; background-color:#202020; padding:10px;");
-    submitEl.setAttribute("style","background-color: #B385F2; padding: 3% 9%; border-radius:5px;");
+    submitEl.setAttribute("type","submit");
+    newMainEl1.setAttribute("class","column");
+    newMainEl1.setAttribute("style","align-content: center; align-items: center;");
+    formEl.setAttribute("class","row");
+    formEl.setAttribute("style","justify-content: center; gap:10px; align-items: center; background-color:#202020; padding:10px;");
+    inputEl.setAttribute("style","color:black;")
+    submitEl.setAttribute("style","background-color: #B385F2; border-radius:5px;");
 
     bodyEl.appendChild(newMainEl1);
     newMainEl1.appendChild(h1El);
@@ -213,9 +219,49 @@ function endDisplay() {
 function quizEnd() {
     newMainEl.remove();
     endDisplay();
+    submitEl.addEventListener('click', function(event) {                //adds event listener to submit button
+        event.preventDefault();                                         //prevents page from refreshing if submit is clicked
+        var scoreboard = {                                              //object that will be stored into local storage
+            initials: inputEl.value.trim(),
+            score: timeLeft.toFixed(2),
+        }
+        localStorage.setItem("scoreboard",JSON.stringify(scoreboard))   //converts object into string and places in local storage
+    })
 }
 
-submitEl.addEventListener('click', function(event) {
-    event.preventDefault();
-    console.log('submitted');
-});
+highscoresEl.addEventListener('click', highscores);
+
+function highscores() {
+    highscoresDisplay();
+    buttonEl.addEventListener('click', function() {
+        mainEl.setAttribute("style","display:flex;")
+        newMainEl.setAttribute("style","display:block;") 
+        newMainEl2.setAttribute("style","display:none") 
+    }
+)
+}
+
+function highscoresDisplay() {
+    
+    
+    mainEl.setAttribute("style","display:none;")
+    newMainEl.setAttribute("style","display:none;")
+    newMainEl.setAttribute("style","display:block;")
+
+    h1El1.textContent = "Highscores"
+    renderHighscores();
+    buttonEl.textContent = "Go Back"
+
+    bodyEl.appendChild(newMainEl2);
+    newMainEl2.appendChild(h1El1);
+    newMainEl2.appendChild(h2El1);
+    newMainEl2.appendChild(divEl3);
+    divEl3.appendChild(buttonEl);
+}
+
+function renderHighscores() {
+    var scoreboard = JSON.parse(localStorage.getItem("scoreboard"));
+    if (scoreboard !== null) {
+        h2El1.textContent = scoreboard.initials + scoreboard.score
+    }
+}
