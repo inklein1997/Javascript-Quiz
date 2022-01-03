@@ -34,28 +34,34 @@ var timeLeft;
 
 var questions = [
     question0 = {
-        question: "adds new elements to the end of an array, and returns the new length",
-        answer: "push()"
+        question: "Inside which HTML element do we put the JavaScript?",
+        answer: "<script>",
+        incorrect: ["<scripting>","<js>", "<javascript>"]
     },
     question1 = {
-        question: "Joins all elements of an array into a string",
-        answer: "join()"
+        question: "What is meant by 'this' keyword in JavaScript?",
+        answer: "It refers to the current object",
+        incorrect: ["It refers to the previous object","It refers to the variable that contains its value","None of the above"]
     },
     question2 = {
-        question: "Selects a part of an array, and returns the new array",
-        answer: "slice()"
+        question: "Which of the following is a JavaScript Object?",
+        answer: "array",
+        incorrect: ["string","number","if statement"]
     },
     question3 = {
-        question: "Creates a new array with the result of calling a function for each array element",
-        answer: "map()"
+        question: "Which tool is commonly used to debug code in JavaScript?",
+        answer: "all of the above",
+        incorrect: ["console.log()","Chrome DevTools", "3rd-Party debuggers"]
     },
     question4 = {
-        question: "Removes the last element of an array, and returns that element",
-        answer: "pop()"
+        question: "Which Array Method removes the last element of an array, and returns that element",
+        answer: "pop()",
+        incorrect: ["push()", "join()", "slice()"],
     },
     question5 = {
         question: "Removes the first element of an array, and returns that element",
-        answer: "shift()"
+        answer: "shift()",
+        incorrect: ["join()", "slice()", "map()"],
     }
 ];
 
@@ -229,10 +235,10 @@ function quizEnd() {
     })
 }
 
-highscoresEl.addEventListener('click', highscores);
-
+highscores();
 function highscores() {
     highscoresDisplay();
+    newMainEl2.setAttribute("style","display:none")
     highscoresEl.addEventListener('click', function(event) {
         var element = event.target;
         var state = element.getAttribute("data-state")
@@ -255,11 +261,6 @@ function highscores() {
 }
 
 function highscoresDisplay() {
-    // mainEl.setAttribute("style","display:none;")
-    // newMainEl.setAttribute("style","display:none;")
-    // newMainEl1.setAttribute("style","display:flex;")
-    // newMainEl2.setAttribute("style","display:block;")
-
     h1El1.textContent = "Highscores"
     function renderHighscores() {
         var scoreboard = JSON.parse(localStorage.getItem("scoreboard"));
