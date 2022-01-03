@@ -233,35 +233,45 @@ highscoresEl.addEventListener('click', highscores);
 
 function highscores() {
     highscoresDisplay();
-    buttonEl.addEventListener('click', function() {
-        mainEl.setAttribute("style","display:flex;")
-        newMainEl.setAttribute("style","display:block;") 
-        newMainEl2.setAttribute("style","display:none") 
+    highscoresEl.addEventListener('click', function(event) {
+        var element = event.target;
+        var state = element.getAttribute("data-state")
+        console.log(state)
+        if (state=="hide") {
+            element.setAttribute("data-state","visible")
+            mainEl.setAttribute("style","display:none;")
+            newMainEl.setAttribute("style","display:none;") 
+            newMainEl1.setAttribute("style","display:none;")
+            newMainEl2.setAttribute("style","display:flex") 
+        } else {
+            element.setAttribute("data-state","hide")
+            mainEl.setAttribute("style","display:flex;")
+            newMainEl.setAttribute("style","display:block;") 
+            newMainEl1.setAttribute("style","display:flex;")
+            newMainEl2.setAttribute("style","display:none") 
+        }
     }
 )
 }
 
 function highscoresDisplay() {
-    
-    
-    mainEl.setAttribute("style","display:none;")
-    newMainEl.setAttribute("style","display:none;")
-    newMainEl.setAttribute("style","display:block;")
+    // mainEl.setAttribute("style","display:none;")
+    // newMainEl.setAttribute("style","display:none;")
+    // newMainEl1.setAttribute("style","display:flex;")
+    // newMainEl2.setAttribute("style","display:block;")
 
     h1El1.textContent = "Highscores"
+    function renderHighscores() {
+        var scoreboard = JSON.parse(localStorage.getItem("scoreboard"));
+        if (scoreboard !== null) {
+            h2El1.textContent = scoreboard.initials + " " + scoreboard.score
+        }
+    }
     renderHighscores();
-    buttonEl.textContent = "Go Back"
 
+    newMainEl2.setAttribute("style","display:flex; flex-direction: column; align-content:center");
+    buttonEl.setAttribute("style", "align-self:center")
     bodyEl.appendChild(newMainEl2);
     newMainEl2.appendChild(h1El1);
     newMainEl2.appendChild(h2El1);
-    newMainEl2.appendChild(divEl3);
-    divEl3.appendChild(buttonEl);
-}
-
-function renderHighscores() {
-    var scoreboard = JSON.parse(localStorage.getItem("scoreboard"));
-    if (scoreboard !== null) {
-        h2El1.textContent = scoreboard.initials + scoreboard.score
-    }
 }
