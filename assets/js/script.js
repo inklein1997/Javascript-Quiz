@@ -134,24 +134,21 @@ function askQuestion() {
 }
 
 function pullQuestionAndAnswer() {
-    var answers = ["push()", "join()", "slice()", "map()", "pop()", "shift()"];
     var questionSelection = questions[Math.floor(Math.random()*questions.length)];      //selects random question from array
     position = questions.indexOf(questionSelection);
 
     question = questionSelection.question;                                              //pulls question from question[n].question]
     correctAnswer = questionSelection.answer;                                           //pulls matching answer from question[n].answer]
-    var answerSelection = answers.filter(answer => answer !== correctAnswer);           //filters out the correct answer from answers array
 
+    answer1 = questionSelection.incorrect[Math.floor(Math.random()*this.length)];                   //selects incorrect answer options for multiple choice
+    questionSelection.incorrect.splice((questionSelection.incorrect.indexOf(answer1)),1);           //prevents displaying duplicate incorrect answer twice by removing them from the array
 
-    answer1 = answerSelection[Math.floor(Math.random()*answerSelection.length)];        //selects incorrect answer options for multiple choice
-    answerSelection.splice((answerSelection.indexOf(answer1)),1);                       //prevents displaying duplicate incorrect answer twice by removing them from the array
+    answer2 = questionSelection.incorrect[Math.floor(Math.random()*this.length)];                   //selects incorrect answer options for multiple choice
+    questionSelection.incorrect.splice((questionSelection.incorrect.indexOf(answer2)),1);           //prevents displaying duplicate incorrect answer twice by removing them from the array
 
-    answer2 = answerSelection[Math.floor(Math.random()*answerSelection.length)];
-    answerSelection.splice((answerSelection.indexOf(answer2)),1);
-
-    answer3 = answerSelection[Math.floor(Math.random()*answerSelection.length)];
-    answerSelection.splice((answerSelection.indexOf(answer3)),1); 
-
+    answer3 = questionSelection.incorrect[Math.floor(Math.random()*this.length)];                   //selects incorrect answer options for multiple choice
+    questionSelection.incorrect.splice((questionSelection.incorrect.indexOf(answer3)),1);           //prevents displaying duplicate incorrect answer twice by removing them from the array; 
+    
     questionNumber++;       //updates question number i.e. Question 1 out of 5, 2 out of 5, etc
 
 }
