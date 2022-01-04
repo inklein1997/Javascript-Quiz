@@ -29,7 +29,7 @@ var submitEl = document.createElement("input");
 var h1El1 = document.createElement("h1")
 var h2El1 = document.createElement("h2")
 var buttonEl = document.createElement("button")
-var newMainEl2 = document.createElement("main")
+var sectionEl = document.createElement("section")
 
 var timeLeft;
 
@@ -143,8 +143,8 @@ function pullQuestionAndAnswer() {
     var questionSelection = questions[Math.floor(Math.random()*questions.length)];      //selects random question from array
     position = questions.indexOf(questionSelection);
 
-    question = questionSelection.question;                                              //pulls question from question[n].question]
-    correctAnswer = questionSelection.answer;                                           //pulls matching answer from question[n].answer]
+    question = questionSelection.question;            //pulls question from question[n].question]
+    correctAnswer = questionSelection.answer;         //pulls matching answer from question[n].answer]
 
     answer1 = questionSelection.incorrect[Math.floor(Math.random()*this.length)];                   //selects incorrect answer options for multiple choice
     questionSelection.incorrect.splice((questionSelection.incorrect.indexOf(answer1)),1);           //prevents displaying duplicate incorrect answer twice by removing them from the array
@@ -231,16 +231,18 @@ function quizEnd() {
     submitEl.addEventListener('click', function(event) {                //adds event listener to submit button
         event.preventDefault();                                         //prevents page from refreshing if submit is clicked
         var scoreboard = {                                              //object that will be stored into local storage
-            initials: inputEl.value.trim(),
             score: timeLeft.toFixed(2),
+            initials: inputEl.value.trim(),
         }      
+        var storedHighscore = JSON.parse(localStorage.getItem("highscore"));
+        localStorage.setItem("highscore",JSON.stringify(scoreboard))
     })
 }
 
 highscores();
 function highscores() {
     highscoresDisplay();
-    newMainEl2.setAttribute("style","display:none")
+    sectionEl.setAttribute("style","display:none")
     highscoresEl.addEventListener('click', function(event) {
         var element = event.target;
         var state = element.getAttribute("data-state")
@@ -250,31 +252,34 @@ function highscores() {
             mainEl.setAttribute("style","display:none;")
             newMainEl.setAttribute("style","display:none;") 
             newMainEl1.setAttribute("style","display:none;")
-            newMainEl2.setAttribute("style","display:flex") 
+            sectionEl.setAttribute("style","display:flex;") 
+            sectionEl.setAttribute("style","gap: 1em; margin: 5vh 5vw")
         } else {
             element.setAttribute("data-state","hide")
             mainEl.setAttribute("style","display:flex;")
             newMainEl.setAttribute("style","display:block;") 
             newMainEl1.setAttribute("style","display:flex;")
-            newMainEl2.setAttribute("style","display:none") 
+            sectionEl.setAttribute("style","display:none") 
+            
         }
     }
 )
 }
 
 function highscoresDisplay() {
-    h1El1.textContent = "Highscores"
+    h1El1.textContent = "Highscore"
     function renderHighscores() {
-        var scoreboard = JSON.parse(localStorage.getItem("scoreboard"));
+        var scoreboard = JSON.parse(localStorage.getItem("highscore"));
         if (scoreboard !== null) {
             h2El1.textContent = scoreboard.initials + " " + scoreboard.score
         }
     }
-    renderHighscores();
 
-    newMainEl2.setAttribute("style","display:flex; flex-direction: column; align-content:center");
-    buttonEl.setAttribute("style", "align-self:center")
-    bodyEl.appendChild(newMainEl2);
-    newMainEl2.appendChild(h1El1);
-    newMainEl2.appendChild(h2El1);
+    formEl.setAttribute("style","justify-content: center; gap:10px; align-items: center; background-color:#202020; padding:10px;");
+
+    renderHighscores();
+    sectionEl.setAttribute("class","column");
+    bodyEl.appendChild(sectionEl);
+    sectionEl.appendChild(h1El1);
+    sectionEl.appendChild(h2El1);
 }
