@@ -1,34 +1,21 @@
 var bodyEl = document.body;
-var highscoresEl = document.getElementById('highscores')
+var highscoresEl = document.getElementById('highscores');
+var buttonEl = document.createElement("button")
 //for question Display
 var mainEl = document.getElementById('main');
 var timerEl = document.getElementById('timer');
 var startEl = document.getElementById('start');
 var newMainEl = document.createElement('main');
-var questionProgressEl = document.createElement('h2');
-var questionEl = document.createElement("h1");
+var h2El = document.createElement('h2');
+var h1El = document.createElement("h1");
 var divEl1 = document.createElement("div");
 var divEl2 = document.createElement("div");
-var divEl3 = document.createElement("div");
 var choice1El = document.createElement("button");
 var choice2El = document.createElement("button");
 var choice3El = document.createElement("button");
 var correctChoiceEl = document.createElement("button");
 var notifyEl = document.createElement("h2");
 
-//for end Display
-var newMainEl1 = document.createElement('main');
-var h1El = document.createElement('h1');
-var h2El = document.createElement('h2');
-var formEl = document.createElement("form");
-var labelEl = document.createElement("label");
-var inputEl = document.createElement("input");
-var submitEl = document.createElement("input");
-
-//for highscore Display
-var h1El1 = document.createElement("h1")
-var h2El1 = document.createElement("h2")
-var buttonEl = document.createElement("button")
 var sectionEl = document.createElement("section")
 
 var timeLeft;
@@ -89,16 +76,13 @@ choice2El.addEventListener("click", notifyIncorrect);       //if clicked, remove
 choice3El.addEventListener("click", notifyIncorrect);       //if clicked, removes 10 from time and notifies user answer is incorrect.  generates new question
 
 function start() {
-    // mainEl.remove();                //clears screen
-    mainEl.innerHTML = ""
-    console.log(mainEl)
+    mainEl.innerHTML = ""           //clears screen
     generateQuestionDisplay();      //generates layout for new question
     askQuestion();                  //displays new question with 
     startTimer();                   //starts timer
 };
 
 function askAgain() {
-    // newMainEl.remove();             //clears screen
     mainEl.innerHTML = "";
     generateQuestionDisplay();      //generates layout for a new question
     askQuestion();                  //picks question that has not been used yet
@@ -114,18 +98,17 @@ function generateQuestionDisplay() {
     divEl2.appendChild(randomAppendOption);
     }
 
-    // bodyEl.appendChild(newMainEl);
     mainEl.appendChild(divEl1);
-    divEl1.appendChild(questionProgressEl);
-    divEl1.appendChild(questionEl);
+    divEl1.appendChild(h2El);
+    divEl1.appendChild(h1El);
     mainEl.appendChild(divEl2);
    ;
 
     divEl1.setAttribute("class", "column");
     divEl1.setAttribute("style", "justify-content:center; margin-top: 2em; gap: 2em;");
     divEl2.setAttribute("style","display:flex; flex-wrap:wrap; justify-content:center; gap: 1em; margin:7%;");
-    questionEl.setAttribute("style","max-width:none;");
-    questionProgressEl.setAttribute("style","width: 280px;align-self:center;");
+    h1El.setAttribute("style","max-width:none;");
+    h2El.setAttribute("style","width: 280px;align-self:center;");
     choice1El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0;");
     choice2El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0;");
     choice3El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0;");
@@ -134,8 +117,8 @@ function generateQuestionDisplay() {
 
 function askQuestion() {
     pullQuestionAndAnswer();    //pulls random question and mathcing answer out from array
-    questionProgressEl.textContent = "Question " + questionNumber + " out of 5";
-    questionEl.textContent = question;
+    h2El.textContent = "Question " + questionNumber + " out of 5";
+    h1El.textContent = question;
     choice1El.textContent = answer1;
     choice2El.textContent = answer2;
     choice3El.textContent = answer3;
@@ -207,19 +190,22 @@ function notifyIncorrect() {
 };
 
 function endDisplay() {
+    var formEl = document.createElement("form");
+    var labelEl = document.createElement("label");
+    var inputEl = document.createElement("input");
+    var submitEl = document.createElement("input");
+
     h1El.textContent = "Quiz is over!";
     labelEl.textContent = "Enter Initials: ";
     h2El.textContent = "Score: " + timeLeft.toFixed(2);
     
     submitEl.setAttribute("type","submit");
-    mainEl.setAttribute("class","column");
-    mainEl.setAttribute("style","align-content: center; align-items: center;");
+    mainEl.setAttribute("style","align-content: center");
     formEl.setAttribute("class","row");
-    formEl.setAttribute("style","justify-content: center; gap:10px; align-items: center; background-color:#202020; padding:10px;");
+    formEl.setAttribute("style","gap:10px; align-items: center; background-color:#202020; padding:10px;");
     inputEl.setAttribute("style","color:black;")
     submitEl.setAttribute("style","background-color: #B385F2; border-radius:5px;");
-
-    // bodyEl.appendChild(newMainEl1);
+    
     mainEl.appendChild(h1El);
     mainEl.appendChild(h2El);
     mainEl.appendChild(formEl);
@@ -246,39 +232,34 @@ highscores();
 function highscores() {
     highscoresDisplay();
     sectionEl.setAttribute("style","display:none")
-    highscoresEl.addEventListener('click', function(event) {
-        var element = event.target;
-        var state = element.getAttribute("data-state")
-        console.log(state)
-        if (state=="hide") {
-            element.setAttribute("data-state","visible")
-            mainEl.setAttribute("style","display:none;")
-            sectionEl.setAttribute("style","display:flex;") 
-            sectionEl.setAttribute("style","gap: 1em; margin: 5vh 5vw")
-        } else {
-            element.setAttribute("data-state","hide")
-            mainEl.setAttribute("style","display:flex;")
-            sectionEl.setAttribute("style","display:none") 
-            
+    highscoresEl.addEventListener('click', function(event) {    //uses data attributes to toggle between quiz and highscore screen
+        var element = event.target;                             //targets the element the event took place
+        var state = element.getAttribute("data-state")          //pulls current data-state value (hide/visible)
+        if (state=="hide") {                                    //if data-state = hide, then...
+            element.setAttribute("data-state","visible")                                //change data-state to visible
+            sectionEl.setAttribute("style","display:flex; gap: 1em; margin: 5vh 5vw")   //display highscore interface    
+            mainEl.setAttribute("style","display:none;")                                //and hide quiz screen
+        } else {                                                //if data-state = visible, then...
+            element.setAttribute("data-state","hide")               //change data-state to hide
+            sectionEl.setAttribute("style","display:none")          //hide highscore interface
+            mainEl.setAttribute("style","display:flex;")            //and display quiz screen
         }
-    }
-)
+    })
 }
 
-function highscoresDisplay() {
-    h1El1.textContent = "Highscore"
-    function renderHighscores() {
-        var scoreboard = JSON.parse(localStorage.getItem("highscore"));
+function highscoresDisplay() {      //generates highscore interface
+    var h2El1 = document.createElement("h2")
+    
+    function renderHighscores() {   //display score from local storage
+        var scoreboard = JSON.parse(localStorage.getItem("highscore"));         //pulls highscore from local storage
         if (scoreboard !== null) {
-            h2El1.textContent = scoreboard.initials + " " + scoreboard.score
+            h2El1.textContent = scoreboard.initials + " " + scoreboard.score    //displays highscore from local storage
         }
     }
-
-    formEl.setAttribute("style","justify-content: center; gap:10px; align-items: center; background-color:#202020; padding:10px;");
-
     renderHighscores();
+
     sectionEl.setAttribute("class","column");
     bodyEl.appendChild(sectionEl);
-    sectionEl.appendChild(h1El1);
+    sectionEl.appendChild(document.createElement("h1")).textContent = "Highscore";
     sectionEl.appendChild(h2El1);
 }
