@@ -1,7 +1,8 @@
-# Javascript Array Methods Quiz
+# Javascript Quiz
 
 ## Table of Contents
 - [Project Goal](##Project-Goal)
+- [Technologies](##Technologies)
 - [Links](##Links)
 - [Screenshot of Application](##Screenshot-of-Webpage)
 - [User Instructions](##User-Instructions)
@@ -10,9 +11,14 @@
 ## Project Goal
 The creators intentions for this application include:
 1. To build a multiple choice quiz utilizing dynamically changing HTML5 and CSS3 powered by JavaScript.
-2. To allow the user to store their own highscore and compare there score with others.
-3. To assess the users knowledge about different array methods.
-4. to create a display that is responsive to different screensizes
+2. To allow the user to store their own highscore in local storage.
+3. To assess the users knowledge about JavaScript fundamentals.
+4. To create a display that is responsive to different screensizes.
+
+## Technologies
+ ![javascript-logo](./assets/images/javascript.png)
+ ![HTML5-logo](./assets/images/html5.png)
+ ![CSS3-logo](./assets/images/css3.png)
 
 ## Links
 - ### [URL to Deployed Application](https://inklein1997.github.io/Javascript-Quiz/)
@@ -35,7 +41,7 @@ The creators intentions for this application include:
     ![display indicating incorrect](./assets/images/step4-2.jpg) <br>
 5. The quiz will end if: (1) the user answers all questions or (2) the timer reaches 0.  The user will then **enter their initials** into the input field and **click submit**
 ![screenshot of end of quiz](./assets/images/step5.jpg)
-6. At any point of the quiz, the user may **click "View Highscores"** to view other user's highscores.
+6. At any point of the quiz, the user may **click "View Highscores"** to view other user's highscores.  To exit the highscore interface, **reclick "View Highscores"**.
 ![screenshot of "view highscores" button](./assets/images/step6.jpg)
 
 ## Acknowledgements
