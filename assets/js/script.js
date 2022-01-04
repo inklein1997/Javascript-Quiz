@@ -89,14 +89,17 @@ choice2El.addEventListener("click", notifyIncorrect);       //if clicked, remove
 choice3El.addEventListener("click", notifyIncorrect);       //if clicked, removes 10 from time and notifies user answer is incorrect.  generates new question
 
 function start() {
-    mainEl.remove();                //clears screen
+    // mainEl.remove();                //clears screen
+    mainEl.innerHTML = ""
+    console.log(mainEl)
     generateQuestionDisplay();      //generates layout for new question
     askQuestion();                  //displays new question with 
     startTimer();                   //starts timer
 };
 
 function askAgain() {
-    newMainEl.remove();             //clears screen
+    // newMainEl.remove();             //clears screen
+    mainEl.innerHTML = "";
     generateQuestionDisplay();      //generates layout for a new question
     askQuestion();                  //picks question that has not been used yet
 };
@@ -111,11 +114,11 @@ function generateQuestionDisplay() {
     divEl2.appendChild(randomAppendOption);
     }
 
-    bodyEl.appendChild(newMainEl);
-    newMainEl.appendChild(divEl1);
+    // bodyEl.appendChild(newMainEl);
+    mainEl.appendChild(divEl1);
     divEl1.appendChild(questionProgressEl);
     divEl1.appendChild(questionEl);
-    newMainEl.appendChild(divEl2);
+    mainEl.appendChild(divEl2);
    ;
 
     divEl1.setAttribute("class", "column");
@@ -166,7 +169,7 @@ function startTimer () {            //starts 100 second countdown
         timerEl.textContent = "Time Left: " + timeLeft.toFixed(2);       //displays countdown
         if ((timeLeft <= 0) || (questions.length < 2)) {                 //If user runs out of time or clicks through all the answer, the quiz ends.
             clearInterval(timeInterval);
-            newMainEl.remove();
+            mainEl.innerHTML="";
             quizEnd();
         }
     }, 10)
@@ -178,7 +181,7 @@ function notifyCorrect() {
     askAgain();                         //asks a new question if another is available.
     var popupIntervalCorrect = setInterval(function() {     //notification only appears for a brief period time
         popupTimeCorrect-=0.02;
-        newMainEl.appendChild(notifyEl);
+        mainEl.appendChild(notifyEl);
         notifyEl.textContent = "CORRECT!";
         if (popupTimeCorrect <= 0) {
             clearInterval(popupIntervalCorrect);
@@ -194,7 +197,7 @@ function notifyIncorrect() {
     askAgain();
     var popupIntervalIncorrect = setInterval(function() {   //notification only appears for a brief period time
         popupTimeIncorrect-=0.02;
-        newMainEl.appendChild(notifyEl);
+        mainEl.appendChild(notifyEl);
         notifyEl.textContent = "INCORRECT!";
         if (popupTimeIncorrect <= 0) {
             clearInterval(popupIntervalIncorrect);
@@ -209,24 +212,24 @@ function endDisplay() {
     h2El.textContent = "Score: " + timeLeft.toFixed(2);
     
     submitEl.setAttribute("type","submit");
-    newMainEl1.setAttribute("class","column");
-    newMainEl1.setAttribute("style","align-content: center; align-items: center;");
+    mainEl.setAttribute("class","column");
+    mainEl.setAttribute("style","align-content: center; align-items: center;");
     formEl.setAttribute("class","row");
     formEl.setAttribute("style","justify-content: center; gap:10px; align-items: center; background-color:#202020; padding:10px;");
     inputEl.setAttribute("style","color:black;")
     submitEl.setAttribute("style","background-color: #B385F2; border-radius:5px;");
 
-    bodyEl.appendChild(newMainEl1);
-    newMainEl1.appendChild(h1El);
-    newMainEl1.appendChild(h2El);
-    newMainEl1.appendChild(formEl);
+    // bodyEl.appendChild(newMainEl1);
+    mainEl.appendChild(h1El);
+    mainEl.appendChild(h2El);
+    mainEl.appendChild(formEl);
     formEl.appendChild(labelEl);
     formEl.appendChild(inputEl);
     formEl.appendChild(submitEl);
 }
 
 function quizEnd() {
-    newMainEl.remove();
+    mainEl.innerHTML="";
     endDisplay();
     submitEl.addEventListener('click', function(event) {                //adds event listener to submit button
         event.preventDefault();                                         //prevents page from refreshing if submit is clicked
@@ -250,15 +253,11 @@ function highscores() {
         if (state=="hide") {
             element.setAttribute("data-state","visible")
             mainEl.setAttribute("style","display:none;")
-            newMainEl.setAttribute("style","display:none;") 
-            newMainEl1.setAttribute("style","display:none;")
             sectionEl.setAttribute("style","display:flex;") 
             sectionEl.setAttribute("style","gap: 1em; margin: 5vh 5vw")
         } else {
             element.setAttribute("data-state","hide")
             mainEl.setAttribute("style","display:flex;")
-            newMainEl.setAttribute("style","display:block;") 
-            newMainEl1.setAttribute("style","display:flex;")
             sectionEl.setAttribute("style","display:none") 
             
         }
