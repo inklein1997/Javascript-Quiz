@@ -73,7 +73,7 @@ choice1El.addEventListener("click", notifyIncorrect);       //if clicked, remove
 choice2El.addEventListener("click", notifyIncorrect);       //if clicked, removes 10 from time and notifies user answer is incorrect.  generates new question
 choice3El.addEventListener("click", notifyIncorrect);       //if clicked, removes 10 from time and notifies user answer is incorrect.  generates new question
 
-highscores();
+highscores(); //calls function on page start to allow user to toggle highscore screen whenever wanted
 function highscores() {
     highscoresDisplay();
     sectionEl.setAttribute("style","display:none")
@@ -137,10 +137,10 @@ function askQuestion() {
     pullQuestionAndAnswer();    //pulls random question and mathcing answer out from array
     h2El.textContent = "Question " + questionNumber + " out of 5";
     h1El.textContent = question;
-    choice1El.textContent = answer1;
-    choice2El.textContent = answer2;
-    choice3El.textContent = answer3;
-    correctChoiceEl.textContent = correctAnswer;
+    choice1El.textContent = answer1;    //incorrect answer
+    choice2El.textContent = answer2;    //incorrect answer
+    choice3El.textContent = answer3;    //incorrect answer
+    correctChoiceEl.textContent = correctAnswer;    //correct answer
 }
 
 function pullQuestionAndAnswer() {
@@ -239,8 +239,6 @@ function quizEnd() {
         localStorage.setItem("highscore",JSON.stringify(scoreboard))
     })
 }
-
-
 
 function highscoresDisplay() {      //generates highscore interface
     var h2El1 = document.createElement("h2")
