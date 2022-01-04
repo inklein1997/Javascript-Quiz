@@ -33,6 +33,9 @@ var answer3;            //stores an incorrect answer
 var correctAnswer;      //stores the correct answer
 var questionNumber = 0; //Question Number out of 5
 
+var highscoresArr = JSON.parse(localStorage.getItem("highscore")) || [];         //pulls highscore from local storage
+
+
 //provides question with matching answer and incorrect answers
 var questions = [
     question0 = {
@@ -75,19 +78,25 @@ choice3El.addEventListener("click", notifyIncorrect);       //if clicked, remove
 
 highscores(); //calls function on page start to allow user to toggle highscore screen whenever wanted
 function highscores() {
-    highscoresDisplay();
     sectionEl.setAttribute("style","display:none")
     highscoresEl.addEventListener('click', function(event) {    //uses data attributes to toggle between quiz and highscore screen
         var element = event.target;                             //targets the element the event took place
         var state = element.getAttribute("data-state")          //pulls current data-state value (hide/visible)
-        if (state=="hide") {                                    //if data-state = hide, then...
+        if (state=="hide") {        //if data-state = hide, then...
             element.setAttribute("data-state","visible")                                //change data-state to visible
             sectionEl.setAttribute("style","display:flex; gap: 1em; margin: 5vh 5vw")   //display highscore interface    
             mainEl.setAttribute("style","display:none;")                                //and hide quiz screen
+            highscoresEl.textContent = "Hide Highscores"
+            
+            sectionEl.innerHTML = '';   //clears sectionEl if element exists
+            highscoresDisplay();        //displays new highscores UI
+            renderHighscores();         //retrieves highscores from local storage and appends to sectionEl
+
         } else {                                                //if data-state = visible, then...
             element.setAttribute("data-state","hide")               //change data-state to hide
             sectionEl.setAttribute("style","display:none")          //hide highscore interface
             mainEl.setAttribute("style","display:flex;")            //and display quiz screen
+            highscoresEl.textContent = "View Highscores"
         }
     })
 }
@@ -109,10 +118,10 @@ function questionDisplay() {
     var appendOption = [correctChoiceEl, choice1El, choice2El, choice3El];
     
     for (var i = 0; i < 4; i++) {       //For loop appends options in randomized order
-    var randomAppendOption = appendOption[Math.floor(Math.random()*appendOption.length)];
-    var positionAppendOption = appendOption.indexOf(randomAppendOption);
-    appendOption.splice(positionAppendOption, 1);   //prevents the same button from being added twice by removing it from array once it has been added.
-    divEl2.appendChild(randomAppendOption);
+        var randomAppendOption = appendOption[Math.floor(Math.random()*appendOption.length)];
+        var positionAppendOption = appendOption.indexOf(randomAppendOption);
+        appendOption.splice(positionAppendOption, 1);   //prevents the same button from being added twice by removing it from array once it has been added.
+        divEl2.appendChild(randomAppendOption);
     }
 
     //adds classes/styles to elements
@@ -226,33 +235,71 @@ function endDisplay() {     //generates display for end of quiz
     formEl.appendChild(submitEl);
 }
 
+function renderHighscores() {   //display score from local storage
+    if (highscoresArr !== null) {
+        highscoresArr.sort(function(a, b) {     //sorts the highscores from highest to lowest
+            return b.score - a.score;
+        })
+
+        for(var i = 0; i < highscoresArr.length; i++){      //iterates the number of time there is a saved score.
+            var h2El1 = document.createElement("h2")
+            h2El1.textContent = highscoresArr[i].initials + " " + highscoresArr[i].score    //displays highscore from local storage
+            sectionEl.appendChild(h2El1);
+        }
+    }
+}
+
 function quizEnd() {
     mainEl.innerHTML="";
     endDisplay();
-    submitEl.addEventListener('click', function(event) {                //adds event listener to submit button
-        event.preventDefault();                                         //prevents page from refreshing if submit is clicked
-        var scoreboard = {                                              //object that will be stored into local storage
+    submitEl.addEventListener('click', function(event) {    //adds event listener to submit button
+        event.preventDefault();                             //prevents page from refreshing if submit is clicked
+        var scoreboard = {                                  //object that will be stored into local storage
             score: timeLeft.toFixed(2),
             initials: inputEl.value.trim(),
-        }      
-        var storedHighscore = JSON.parse(localStorage.getItem("highscore"));
-        localStorage.setItem("highscore",JSON.stringify(scoreboard))
+        }
+        highscoresArr.push(scoreboard);     //adds scoreboard object to array
+        localStorage.setItem("highscore",JSON.stringify(highscoresArr));        //saves array to local storage
+        highscoresArr = JSON.parse(localStorage.getItem('highscore')) || [];    //pulls array from local storage
+        sectionEl.innerHTML = ''    //clears previous elements so new updated scoreboard will display with no duplicates
+        
+        sectionEl.setAttribute("class","column");
+        bodyEl.appendChild(sectionEl);
+        sectionEl.appendChild(document.createElement("h1")).textContent = "Highscores: ";
+        
+        renderHighscores();
+
+        //needed for display of scores at the end.
+        var clearButtonEl = document.createElement('button');
+        var requizButtonEl = document.createElement('button');
+        var divEl3 = document.createElement('div');
+        divEl3.setAttribute("style","display: flex; flex-direction:row; justify-content:center; gap: 25px")
+        sectionEl.appendChild(divEl3)
+        divEl3.appendChild(clearButtonEl);
+        divEl3.appendChild(requizButtonEl);
+
+        clearButtonEl.setAttribute("style","padding: 1%");
+        requizButtonEl.setAttribute("style","padding: 1%");
+
+        clearButtonEl.textContent = "Clear Highscores and Retake the Quiz"
+        requizButtonEl.textContent = "Retake the Quiz"
+        highscoresEl.setAttribute("data-state","visible")               //change data-state to hide
+        sectionEl.setAttribute("style","display:flex; gap: 10px;")          //hide highscore interface
+        mainEl.setAttribute("style","display:none;") 
+        sectionEl.setAttribute("class","column");
+
+        clearButtonEl.addEventListener('click', function() {        //clears local storage and refreshes the page
+            localStorage.clear();
+            window.location.reload();
+        })
+        requizButtonEl.addEventListener('click', function() {       //refreshes the page
+            window.location.reload();
+        })
     })
 }
 
 function highscoresDisplay() {      //generates highscore interface
-    var h2El1 = document.createElement("h2")
-    
-    function renderHighscores() {   //display score from local storage
-        var scoreboard = JSON.parse(localStorage.getItem("highscore"));         //pulls highscore from local storage
-        if (scoreboard !== null) {
-            h2El1.textContent = scoreboard.initials + " " + scoreboard.score    //displays highscore from local storage
-        }
-    }
-    renderHighscores();
-
     sectionEl.setAttribute("class","column");
     bodyEl.appendChild(sectionEl);
-    sectionEl.appendChild(document.createElement("h1")).textContent = "Highscore";
-    sectionEl.appendChild(h2El1);
+    sectionEl.appendChild(document.createElement("h1")).textContent = "Highscores: ";
 }
