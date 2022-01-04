@@ -25,6 +25,7 @@ var labelEl = document.createElement("label");
 var inputEl = document.createElement("input");
 var submitEl = document.createElement("input");
 
+//for highscore Display
 var h1El1 = document.createElement("h1")
 var h2El1 = document.createElement("h2")
 var buttonEl = document.createElement("button")
@@ -64,6 +65,11 @@ var questions = [
         incorrect: ["join()", "slice()", "map()"],
     }
 ];
+
+
+var retrievedScores = JSON.parse(localStorage.getItem('highscore'));
+console.log(retrievedScores)
+
 
 var question;
 var position;
@@ -227,8 +233,7 @@ function quizEnd() {
         var scoreboard = {                                              //object that will be stored into local storage
             initials: inputEl.value.trim(),
             score: timeLeft.toFixed(2),
-        }
-        localStorage.setItem("scoreboard",JSON.stringify(scoreboard))   //converts object into string and places in local storage
+        }      
     })
 }
 
