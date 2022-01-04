@@ -16,10 +16,24 @@ var choice3El = document.createElement("button");
 var correctChoiceEl = document.createElement("button");
 var notifyEl = document.createElement("h2");
 
-var sectionEl = document.createElement("section")
+//for end display
+var sectionEl = document.createElement("section");
+var submitEl = document.createElement("input");
+var inputEl = document.createElement("input");
+var formEl = document.createElement("form");
+var labelEl = document.createElement("label");
 
-var timeLeft;
+var timeLeft;           //stores remaining time/score
 
+var question;           //stores the chosen question
+var position;           //needed for position of object in [questions]
+var answer1;            //stores an incorrect answer
+var answer2;            //stores an incorrect answer
+var answer3;            //stores an incorrect answer
+var correctAnswer;      //stores the correct answer
+var questionNumber = 0; //Question Number out of 5
+
+//provides question with matching answer and incorrect answers
 var questions = [
     question0 = {
         question: "Inside which HTML element do we put the JavaScript?",
@@ -53,57 +67,55 @@ var questions = [
     }
 ];
 
-
-var retrievedScores = JSON.parse(localStorage.getItem('highscore'));
-console.log(retrievedScores)
-
-
-var question;
-var position;
-var answer1;
-var answer2;
-var answer3;
-var correctAnswer;
-var questionNumber = 0;
-
-//Remaining things to do...
-    //highscore storage
-
-startEl.addEventListener("click", start);
+startEl.addEventListener("click", start);                   //if clicked, quiz starts
 correctChoiceEl.addEventListener("click", notifyCorrect);   //if clicked, adds 1 to score and notifies user answer is correct.  generates new question
 choice1El.addEventListener("click", notifyIncorrect);       //if clicked, removes 10 from time and notifies user answer is incorrect.  generates new question
 choice2El.addEventListener("click", notifyIncorrect);       //if clicked, removes 10 from time and notifies user answer is incorrect.  generates new question
 choice3El.addEventListener("click", notifyIncorrect);       //if clicked, removes 10 from time and notifies user answer is incorrect.  generates new question
 
+highscores();
+function highscores() {
+    highscoresDisplay();
+    sectionEl.setAttribute("style","display:none")
+    highscoresEl.addEventListener('click', function(event) {    //uses data attributes to toggle between quiz and highscore screen
+        var element = event.target;                             //targets the element the event took place
+        var state = element.getAttribute("data-state")          //pulls current data-state value (hide/visible)
+        if (state=="hide") {                                    //if data-state = hide, then...
+            element.setAttribute("data-state","visible")                                //change data-state to visible
+            sectionEl.setAttribute("style","display:flex; gap: 1em; margin: 5vh 5vw")   //display highscore interface    
+            mainEl.setAttribute("style","display:none;")                                //and hide quiz screen
+        } else {                                                //if data-state = visible, then...
+            element.setAttribute("data-state","hide")               //change data-state to hide
+            sectionEl.setAttribute("style","display:none")          //hide highscore interface
+            mainEl.setAttribute("style","display:flex;")            //and display quiz screen
+        }
+    })
+}
+
 function start() {
-    mainEl.innerHTML = ""           //clears screen
-    generateQuestionDisplay();      //generates layout for new question
-    askQuestion();                  //displays new question with 
-    startTimer();                   //starts timer
+    mainEl.innerHTML = ""       //clears screen
+    questionDisplay();          //generates layout for new question
+    askQuestion();              //displays new question with 
+    startTimer();               //starts timer
 };
 
 function askAgain() {
-    mainEl.innerHTML = "";
-    generateQuestionDisplay();      //generates layout for a new question
-    askQuestion();                  //picks question that has not been used yet
+    mainEl.innerHTML = "";      //clears screen
+    questionDisplay();          //generates layout for a new question
+    askQuestion();              //picks question that has not been used yet
 };
 
-function generateQuestionDisplay() {
+function questionDisplay() {
     var appendOption = [correctChoiceEl, choice1El, choice2El, choice3El];
     
     for (var i = 0; i < 4; i++) {       //For loop appends options in randomized order
     var randomAppendOption = appendOption[Math.floor(Math.random()*appendOption.length)];
     var positionAppendOption = appendOption.indexOf(randomAppendOption);
-    appendOption.splice(positionAppendOption, 1);
+    appendOption.splice(positionAppendOption, 1);   //prevents the same button from being added twice by removing it from array once it has been added.
     divEl2.appendChild(randomAppendOption);
     }
 
-    mainEl.appendChild(divEl1);
-    divEl1.appendChild(h2El);
-    divEl1.appendChild(h1El);
-    mainEl.appendChild(divEl2);
-   ;
-
+    //adds classes/styles to elements
     divEl1.setAttribute("class", "column");
     divEl1.setAttribute("style", "justify-content:center; margin-top: 2em; gap: 2em;");
     divEl2.setAttribute("style","display:flex; flex-wrap:wrap; justify-content:center; gap: 1em; margin:7%;");
@@ -113,6 +125,12 @@ function generateQuestionDisplay() {
     choice2El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0;");
     choice3El.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0;");
     correctChoiceEl.setAttribute("style","flex: 0 1 33%; min-width:400px; height:68.75px; font-size: 2em; padding:0;");
+
+    //appends elements
+    mainEl.appendChild(divEl1);
+    divEl1.appendChild(h2El);
+    divEl1.appendChild(h1El);
+    mainEl.appendChild(divEl2);  
 }
 
 function askQuestion() {
@@ -150,18 +168,17 @@ function startTimer () {            //starts 100 second countdown
     var timeInterval = setInterval(function() {
         timeLeft-=0.01;
         timerEl.textContent = "Time Left: " + timeLeft.toFixed(2);       //displays countdown
-        if ((timeLeft <= 0) || (questions.length < 2)) {                 //If user runs out of time or clicks through all the answer, the quiz ends.
-            clearInterval(timeInterval);
-            mainEl.innerHTML="";
-            quizEnd();
+        if ((timeLeft <= 0) || (questions.length < 2)) {    //If user runs out of time or clicks through all the answer, then...
+            clearInterval(timeInterval);                    //timer stops
+            quizEnd();                                      //quiz ends
         }
     }, 10)
 };
 
-function notifyCorrect() {
+function notifyCorrect() {      //displays notification for correct selections
     var popupTimeCorrect = 1.5;
     questions.splice(position, 1);      //removes question from array so it cannot be asked again
-    askAgain();                         //asks a new question if another is available.
+    askAgain();                         //prompts next question
     var popupIntervalCorrect = setInterval(function() {     //notification only appears for a brief period time
         popupTimeCorrect-=0.02;
         mainEl.appendChild(notifyEl);
@@ -173,11 +190,11 @@ function notifyCorrect() {
     },10)
 };
 
-function notifyIncorrect() {
-    timeLeft-=10;
+function notifyIncorrect() {    //displays notification for incorrect selections
+    timeLeft-=10;               //removes 10 seconds from remaining time
     var popupTimeIncorrect = 1.5;
     questions.splice(position, 1);  //removes question from array so it cannot be asked again.
-    askAgain();
+    askAgain();                     //prompts next question
     var popupIntervalIncorrect = setInterval(function() {   //notification only appears for a brief period time
         popupTimeIncorrect-=0.02;
         mainEl.appendChild(notifyEl);
@@ -189,12 +206,7 @@ function notifyIncorrect() {
     },10)
 };
 
-function endDisplay() {
-    var formEl = document.createElement("form");
-    var labelEl = document.createElement("label");
-    var inputEl = document.createElement("input");
-    var submitEl = document.createElement("input");
-
+function endDisplay() {     //generates display for end of quiz
     h1El.textContent = "Quiz is over!";
     labelEl.textContent = "Enter Initials: ";
     h2El.textContent = "Score: " + timeLeft.toFixed(2);
@@ -228,24 +240,7 @@ function quizEnd() {
     })
 }
 
-highscores();
-function highscores() {
-    highscoresDisplay();
-    sectionEl.setAttribute("style","display:none")
-    highscoresEl.addEventListener('click', function(event) {    //uses data attributes to toggle between quiz and highscore screen
-        var element = event.target;                             //targets the element the event took place
-        var state = element.getAttribute("data-state")          //pulls current data-state value (hide/visible)
-        if (state=="hide") {                                    //if data-state = hide, then...
-            element.setAttribute("data-state","visible")                                //change data-state to visible
-            sectionEl.setAttribute("style","display:flex; gap: 1em; margin: 5vh 5vw")   //display highscore interface    
-            mainEl.setAttribute("style","display:none;")                                //and hide quiz screen
-        } else {                                                //if data-state = visible, then...
-            element.setAttribute("data-state","hide")               //change data-state to hide
-            sectionEl.setAttribute("style","display:none")          //hide highscore interface
-            mainEl.setAttribute("style","display:flex;")            //and display quiz screen
-        }
-    })
-}
+
 
 function highscoresDisplay() {      //generates highscore interface
     var h2El1 = document.createElement("h2")
