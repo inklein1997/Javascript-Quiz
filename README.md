@@ -11,6 +11,7 @@
 - [License](#License)
 - [Contribution](#Contribution)
 - [Acknowledgements](#Acknowledgements)
+- [Questions](#Questions)
 
 ## Project Goal
 The creators intentions for this application include:
@@ -59,3 +60,10 @@ Here's how you can contribute...
 
 ## Acknowledgements
 - reset.css was provided by the University of Texas at Austin Coding Bootcamp curriculum
+
+## Questions
+If you have any questions, please contact me via:
+1. GitHub -- [@inklein1997](https://github.com/inklein1997)
+2. Email -- michaelklein1997@gmail.com
+
+[^1]: Code of Conduct provided by [Contributor Covenant](https://www.contributor-covenant.org/)
