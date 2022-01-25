@@ -1,12 +1,16 @@
 # Javascript Quiz
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md)
 
 ## Table of Contents
-- [Project Goal](##Project-Goal)
-- [Technologies](##Technologies)
-- [Links](##Links)
-- [Screenshot of Application](##Screenshot-of-Webpage)
-- [User Instructions](##User-Instructions)
-- [Acknowledgements](##Acknowledgements)
+- [Project Goal](#Project-Goal)
+- [Technologies](#Technologies)
+- [Links](#Links)
+- [Screenshot of Application](#Screenshot-of-Webpage)
+- [User Instructions](#User-Instructions)
+- [License](#License)
+- [Contribution](#Contribution)
+- [Acknowledgements](#Acknowledgements)
 
 ## Project Goal
 The creators intentions for this application include:
@@ -43,6 +47,15 @@ The creators intentions for this application include:
 ![screenshot of end of quiz](./assets/images/step5.jpg)
 6. At any point of the quiz, the user may **click "View Highscores"** to view other user's highscores.  To exit the highscore interface, **reclick "View Highscores"**.
 ![screenshot of "view highscores" button](./assets/images/step6.jpg)
+
+## License
+  This project is licensed under the terms of [MIT](https://opensource.org/licenses/MIT).
+  
+## Contribution
+Before contributing to **Javascript Quiz**, please read this [code of conduct](code_of_conduct.md)[^1].<br>
+Here's how you can contribute...
+1. Add issue or recommendation for improvement to Issues tab on Github.
+2. Submit pull request for review.
 
 ## Acknowledgements
 - reset.css was provided by the University of Texas at Austin Coding Bootcamp curriculum
